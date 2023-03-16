@@ -26,12 +26,30 @@ public class DrawingCanvas extends JComponent {
             System.out.println();
         }
     }
+    public static double[] extendPoint(double x, double y, double slope, double distance) {
+        // calculate the change in x and y for the specified distance increase along the slope
+        double delta_x = distance / Math.sqrt(1 + slope*slope);
+        double delta_y = slope * delta_x;
+        
+        // calculate the new x and y coordinates
+        double new_x = x + delta_x;
+        double new_y = y + delta_y;
+        
+        return new double[] { new_x, new_y };
+    }
     public static void drawSlopeLine(double slope, int x, int y, Graphics2D g2d) {
-        double change = (int)(slope * 5);
-        int xSlope1 = (int)(x+10);
-        int ySlope1= (int)(y-change);
-        int xSlope2 = (int)(x-10);
-        int ySlope2 = (int)( y+change);
+        double change =  10;
+
+        double[] return2 = extendPoint(x, y, -slope, change);
+        double[] return1 = extendPoint(x, y, -slope, -change);
+        System.out.println("return1[0]" + return1[0]);
+        System.out.println("return1[1]" + return1[1]);
+        System.out.println("return2[0]" + return2[0]);
+        System.out.println("return2[1]" + return2[1]);
+        int xSlope1 = (int)(return1[0]);
+        int ySlope1= (int)(return1[1]);
+        int xSlope2 = (int)(return2[0]);
+        int ySlope2 = (int)(return2[1]);
         g2d.setStroke(new BasicStroke(2));
         g2d.drawLine(xSlope1, ySlope1, xSlope2, ySlope2);
     
@@ -76,10 +94,11 @@ public class DrawingCanvas extends JComponent {
         System.out.println("MID: " + mid);
 
         //coordinates[0][15][0], coordinates[0][15][1]
-        g2d.drawLine(coordinates[0][mid][0], coordinates[0][mid][1], coordinates[size-1][mid][0], coordinates[size-1][mid][1]);
+        g2d.drawLine(coordinates[0][mid+1][0], coordinates[0][mid+1][1], coordinates[size-1][mid+1][0], coordinates[size-1][mid+1][1]);
         g2d.drawLine(coordinates[mid][0][0], coordinates[mid][0][1], coordinates[mid][size-1][0], coordinates[mid][size-1][1]);
         //display3DArray(coordinates);
         //###########################################################################################################
+        /* 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the coefficients of the polynomial separated by spaces: ");
         String[] input = scanner.nextLine().split("\\s+");
@@ -94,10 +113,13 @@ public class DrawingCanvas extends JComponent {
         for (int i = 0; i < derivativeCoefficients.length; i++) {
             input2 += derivativeCoefficients[i] + " ";
         }
-        System.out.println();
+        System.out.println()
+        */
         //###########################################################################################################
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the coefficients of y prime separated by spaces: ");
+        String[] polyinput = scanner.nextLine().split("\\s+");
 
-        String[] polyinput = input2.split("\\s+");
         int[] polycoefficients = new int[polyinput.length];
         for (int i = 0; i < polyinput.length; i++) {
             polycoefficients[i] = Integer.parseInt(polyinput[i]);
