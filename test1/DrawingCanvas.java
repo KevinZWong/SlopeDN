@@ -1,3 +1,4 @@
+
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
@@ -9,14 +10,36 @@ import java.awt.Graphics2D;
 import javax.swing.JComponent;
 import java.util.*;
 public class DrawingCanvas extends JComponent {
-    private int width;
-    private int height;
-    public DrawingCanvas (int w, int h) {
-        width = w;
-        height = h;
-        setLayout(new FlowLayout()); // add a layout manager to make the button appear
-        JButton button = new JButton("Click me!"); // create a button
-        add(button); // add the button to the component
+    public TextBoxExample() {
+        JFrame frame = new JFrame("Text Box Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+
+        JLabel label = new JLabel("Enter your name:");
+        panel.add(label);
+
+        textField = new JTextField();
+        textField.addActionListener(this);
+        panel.add(textField);
+
+        frame.getContentPane().add(panel);
+
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        String userInput = textField.getText();
+        System.out.println("User entered: " + userInput);
+    }
+    public DrawingCanvas() {
+        setPreferredSize(new Dimension(800, 850));
+
+        setLayout(new BorderLayout());
+        JButton button = new JButton("Click me");
+        add(button, BorderLayout.WEST);
     }
     public static void display3DArray(int[][][] arr) {
         for (int i = 0; i < arr.length; i++) {
@@ -56,6 +79,7 @@ public class DrawingCanvas extends JComponent {
         g2d.setStroke(new BasicStroke(2));
         g2d.drawLine(xSlope1, ySlope1, xSlope2, ySlope2);
     
+
     }
     public static int calculatePolynomial(int[] coefficients, int x) {
         int result = 0;
@@ -76,8 +100,12 @@ public class DrawingCanvas extends JComponent {
         return derivativeCoefficients;
     }
 
-
+    @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        ////////////////////////////////////////////////////
+
         Graphics2D g2d = (Graphics2D) g;
         int size = 21;
 
@@ -98,6 +126,7 @@ public class DrawingCanvas extends JComponent {
         //coordinates[0][15][0], coordinates[0][15][1]
         g2d.drawLine(coordinates[0][mid+1][0], coordinates[0][mid+1][1], coordinates[size-1][mid+1][0], coordinates[size-1][mid+1][1]);
         g2d.drawLine(coordinates[mid][0][0], coordinates[mid][0][1], coordinates[mid][size-1][0], coordinates[mid][size-1][1]);
+        new TextBoxExample();
         //display3DArray(coordinates);
         //###########################################################################################################
         /* 
@@ -138,6 +167,16 @@ public class DrawingCanvas extends JComponent {
         
 
         
+        //////////////////////////////////////////////////
+    }
 
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Drawing Canvas Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.getContentPane().add(new DrawingCanvas());
+
+        frame.pack();
+        frame.setVisible(true);
     }
 }
